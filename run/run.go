@@ -9,7 +9,7 @@ func Run(c *classes.Config, command *classes.Command) error {
 	case classes.TypeParallel:
 		execParallel(command.Run)
 	case classes.TypeWatch:
-		err := runWatch(c, command.Run[0], command.Run[1:])
+		err := runWatch(c, command.Name, command.Run)
 		if err != nil {
 			return err
 		}

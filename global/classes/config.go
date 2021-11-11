@@ -11,7 +11,7 @@ import (
 type Config struct {
 	Sequential *map[string]interface{} `toml:"sequential"`
 	Parallel   *map[string][]string    `toml:"parallel"`
-	Watch      *map[string]string      `toml:"watch"`
+	Watch      *map[string]interface{} `toml:"watch"`
 }
 
 func GetConfig() (*Config, error) {
@@ -48,6 +48,7 @@ func (c *Config) FindCommandFromName(name string) (*Command, error) {
 			return &Command{
 				Type: TypeSequential,
 				Run:  r,
+				Name: key,
 			}, nil
 		}
 	}
@@ -63,6 +64,7 @@ func (c *Config) FindCommandFromName(name string) (*Command, error) {
 			return &Command{
 				Type: TypeParallel,
 				Run:  v,
+				Name: key,
 			}, nil
 		}
 	}
@@ -75,9 +77,15 @@ func (c *Config) FindCommandFromName(name string) (*Command, error) {
 				continue
 			}
 
+			r, err := fromStringOrStrings(value)
+			if err != nil {
+				return nil, global.ErrBadCommandType(name)
+			}
+
 			return &Command{
 				Type: TypeWatch,
-				Run:  []string{key, value},
+				Run:  r,
+				Name: key,
 			}, nil
 		}
 	}

@@ -2,7 +2,7 @@
 # run `maak run get` to run `go get` then `go mod tidy`
 get = ["go get", "go mod tidy"]
 build = "go build -o build/maak main.go"
-		
+	
 [parallel]
 # run `maak run test` to run below echos and sleep in parallel
 # parallel only allows an array of strings

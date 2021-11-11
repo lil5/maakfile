@@ -9,4 +9,5 @@ const (
 type Command struct {
 	Type int
 	Run  []string
+	Name string // only used for watch commands
 }
